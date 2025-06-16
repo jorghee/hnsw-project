@@ -1,0 +1,3 @@
+[submodule "include/hnswlib"]
+	path = include/hnswlib
+	url = git@github.com:nmslib/hnswlib.git
