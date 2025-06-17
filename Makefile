@@ -1,30 +1,25 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -O2 -Iinclude
 
-SRCDIR = src
-OBJDIR = build
-BINDIR = bin
-INCDIR = include
+SRC_DIR = src
+INCLUDE_DIR = include
+HNSW_DIR = include/hnswlib/hnswlib
 
-SOURCES = $(wildcard $(SRCDIR)/*.cpp)
-OBJECTS = $(patsubst $(SRCDIR)/%.cpp, $(OBJDIR)/%.o, $(SOURCES))
-TARGET = $(BINDIR)/hnsw_recommender
+SRCS = $(SRC_DIR)/main.cpp \
+       $(SRC_DIR)/app_config.cpp \
+       $(SRC_DIR)/csv_reader.cpp \
+       $(SRC_DIR)/hnsw_indexer.cpp
 
-# Rules
+OBJS = $(SRCS:.cpp=.o)
+TARGET = hnsw_test
+
 all: $(TARGET)
 
-$(TARGET): $(OBJECTS)
-	@mkdir -p $(BINDIR)
-	$(CXX) $(CXXFLAGS) $^ -o $@
+$(TARGET): $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
-	@mkdir -p $(OBJDIR)
+%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(OBJDIR) $(BINDIR)
-
-run: all
-	./$(TARGET)
-
-.PHONY: all clean run
+	rm -f $(SRC_DIR)/*.o $(TARGET)
